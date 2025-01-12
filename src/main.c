@@ -1,10 +1,12 @@
+#include <stdlib.h>
+#include <time.h>
+
 #include "terminal.h"
 #include "buffer.h"
 #include "colors.h"
 #include "fire.h"
 #include "info.h"
-#include <stdlib.h>
-#include <time.h>
+#include "cli_opts.h"
 
 static volatile int keep_running = 1;
 
@@ -47,25 +49,39 @@ int main (int argc, char **argv){
         goto free_and_exit;
     }
 
-    const uint32_t mod = 5;
+    uint32_t fire_spread = guestimate_spread(height);
+    double target_fps = DEFAULT_FPS;
 
     init_fire(fire_colors, width, fire_height);
     clear_screen();
     term_command(CURSOR_HIDE);
 
-    double target_fps = 30.0;
-    double target_frame_time_ms = 1000.0 / target_fps;
+    if (parse_cli_opts(argc, argv, &target_fps, &fire_spread) != 0){
+        info = CLI_ERROR;
+        goto free_and_exit;
+    }
+    
+    double target_frame_time_ms;
+    if (target_fps == 0){
+        target_frame_time_ms = 0.0;
+    } else{
+        target_frame_time_ms = 1000.0 / target_fps;
+    }
 
     double frame_time_ms;
-    int initial_time;
+    double initial_time;
+    double missing_time;
     while (keep_running) {
         initial_time = clock();
-        spread_fire(fire_colors, width, fire_size, mod);
+        spread_fire(fire_colors, width, fire_size, fire_spread);
         paint_buffer(&buf, fire_colors, width, height);
         WRITE_BUFFER(buf);
         BUFFER_RESET(buf);
         frame_time_ms = (clock() - initial_time)/CLOCKS_PER_SEC * 1000.0;
-        usleep(1000.0 * (target_frame_time_ms - frame_time_ms));
+        missing_time = target_frame_time_ms - frame_time_ms;
+        if (missing_time > 0){
+            usleep(1000.0 * missing_time);
+        }
     }
 
 free_and_exit:

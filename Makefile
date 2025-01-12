@@ -5,9 +5,9 @@ OBJ=$(SRC:.c=.o)
 DEPS=$(wildcard src/*.h)
 TARGET=doom-yule
 
-.PHONY: all clean
+.PHONY: all neat clean
 
-all: $(TARGET)
+all: $(TARGET) neat
 
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^

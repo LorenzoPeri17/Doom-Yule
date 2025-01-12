@@ -7,7 +7,10 @@ Printing errors that have occurred during the execution of the program.
 void print_info(int info){
     switch (info){
         case MALLOC_ERROR:
-            fprintf(stderr, "Error: malloc failed\n");
+            fprintf(stderr, "Error allocating memory\n");
+            break;
+        case CLI_ERROR:
+            print_usage();
             break;
         default:
             break;
