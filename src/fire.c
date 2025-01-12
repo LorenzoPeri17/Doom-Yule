@@ -7,7 +7,6 @@ Fire algorithm heavily inspired by the wonderful
 ************************************************/
 
 #include "fire.h"
-#include <assert.h>
 
 
 inline void init_fire(uint32_t *fire_colors, const uint32_t width, const uint32_t fire_height) {
@@ -32,7 +31,7 @@ inline void spread_fire(uint32_t *fire_colors, const uint32_t width, const uint3
         if ((to_spread == 0) && (pos >= width)) {
             fire_colors[pos - width] = 0;
         } else {
-            rnd = (uint_fast32_t)(rand() % mod); // random integer between 0 and 3
+            rnd = (uint_fast32_t)(rand() % mod); // random integer between 0 and mod-1
             new_pos = pos - (int_fast32_t)rnd + 1;
             spread_dst = (new_pos >= 0) ? (uint_fast32_t)new_pos : pos;
             if (spread_dst >= width) {
