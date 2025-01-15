@@ -1,7 +1,10 @@
+
+
 # Visual Studio Code Settings
 .vscode
 
 # Compiled binary
+bin
 doom-yule
 
 # Prerequisites

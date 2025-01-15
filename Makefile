@@ -3,11 +3,15 @@ CFLAGS= -O3 -I./src -Wall -Wextra
 SRC=$(wildcard src/*.c)
 OBJ=$(SRC:.c=.o)
 DEPS=$(wildcard src/*.h)
-TARGET=doom-yule
+TARGET=bin/doom-yule
+PREFIX?=/usr/local
 
-.PHONY: all neat clean
+.PHONY: all neat clean install
 
-all: $(TARGET) neat
+all: bin $(TARGET) neat
+
+bin:
+	mkdir -p bin
 
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
@@ -15,10 +19,14 @@ $(TARGET): $(OBJ)
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+install:
+	install -m 755 $(TARGET) $(PREFIX)/bin/
+
 neat:
 	rm -f $(OBJ)
 
 clean: neat
 	rm -f $(TARGET)
+	rmdir bin 2>/dev/null || true
 
 

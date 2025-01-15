@@ -22,7 +22,31 @@ make
 
 you should be good to go!
 
-## Usage 
+If you love `doom-yule` and want to be able to set fire to _any_ terminal with a few key strokes, you can even
+
+```bash
+make install
+```
+
+to keep it in you path!
+
+> ### Install tips
+>
+> * By default I'll try to install the binary in `/usr/local`, but you can specify a `PREFIX` to change the location, i.e.
+>
+>```bash
+> PREFIX=/opt/homebrew make install
+>```
+>
+> * You may need to
+>
+>```bash
+> sudo make install
+>```
+>
+> to get it to stick :)
+
+## Usage
 
 `doom-yule` tries to pick sensible settings for your terminal window, but if you want to customize your fire
 
